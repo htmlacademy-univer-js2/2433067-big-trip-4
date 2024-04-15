@@ -14,7 +14,7 @@ function getRandomInteger (min, max) {
   return Math.floor(result);
 }
 
-function getRandomValue(items) {
+function getRandomArrayElement(items) {
   return items[getRandomInteger(0, items.length - 1)];
 }
 
@@ -61,7 +61,7 @@ const getPointDuration = (dateFrom, dateTo) => {
 
 export {
   getRandomInteger,
-  getRandomValue,
+  getRandomArrayElement,
   getDate,
   formatStringToDateTime,
   formatStringToShortDate,

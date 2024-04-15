@@ -1,17 +1,18 @@
-import {getRandomValue} from '../util.js';
-import { CITIES, DESCRIPTION } from '.const.js';
+import { getRandomArrayElement, getRandomInteger } from '../utils.js';
+import { DESCRIPTION, CITIES, DESTINATION_COUNT } from '../const.js';
+
 function generateDestination() {
-  const city = getRandomValue(CITIES);
-  return{
+  return {
     id: crypto.randomUUID(),
-    name: city,
-    description: DESCRIPTION,
-    pictures: [
-      {
-        'srs': `https://loremflickr.com/248/152?random=${crypto.randomUUID()}`,
-        'description': `${city} description`
-      }
-    ]
+    description: Array.from({length: getRandomInteger(1, 5)}, () => getRandomArrayElement(DESCRIPTION)).join(' '),
+    name: getRandomArrayElement(CITIES),
+    pictures: Array.from({length: getRandomInteger(1, 5)}, () => ({
+      src: `https://loremflickr.com/248/152?random=${crypto.randomUUID()}`,
+      description: getRandomArrayElement(DESCRIPTION)
+    }))
   };
 }
-export {generateDestination};
+
+const mockDestinations = Array.from({length: DESTINATION_COUNT}, generateDestination);
+
+export {mockDestinations};
