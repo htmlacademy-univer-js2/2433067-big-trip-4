@@ -1,7 +1,7 @@
 import { getRandomInteger, getDate } from '../utils.js';
 import { Price } from '../const.js';
 
-function generateEvent(type, offersID, destinationID) {
+function generatePoint(type, offersID, destinationID) {
   return {
     id: crypto.randomUUID(),
     type,
