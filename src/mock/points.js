@@ -14,4 +14,4 @@ function generatePoint(type, offersID, destinationID) {
   };
 }
 
-export {generateEvent};
+export {generatePoint};
