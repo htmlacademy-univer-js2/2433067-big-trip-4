@@ -6,6 +6,13 @@ export default class Observable {
   #observers = new Set();
 
   /**
+ * Класс, реализующий паттерн Наблюдатель.
+ */
+export default class Observable {
+  /** @type {Set<observerCallback>} Множество функций типа observerCallback */
+  #observers = new Set();
+
+  /**
    * Метод, позволяющий подписаться на событие
    * @param {observerCallback} observer Функция, которая будет вызвана при наступлении события
    */
