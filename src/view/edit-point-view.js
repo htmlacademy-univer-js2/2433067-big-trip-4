@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { TYPES, CITIES, POINT_EMPTY } from '../const.js';
+import { TYPES, CITIES, POINT_EMPTY } from '../mock/const.js';
 import { firstLetterToUpperCase, firstLetterToLowerCase } from '../utils/common.js';
 import { formatStringToDateTime } from '../utils/event.js';
 

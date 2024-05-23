@@ -1,20 +1,7 @@
-import { FilterType } from '../const';
-import { isEventFuture, isEventPresent, isEventPast } from '../utils/event';
+import { filter } from '../utils/filter';
 
-const filter = {
-  [FilterType.EVERYTHING]: (events) => [...events],
-  [FilterType.FUTURE]: (events) => events.filter((event) => isEventFuture(event)),
-  [FilterType.PRESENT]: (events) => events.filter((event) => isEventPresent(event)),
-  [FilterType.PAST]: (events) => events.filter((event) => isEventPast(event)),
-};
-
-function generateFilters(events) {
-  return Object.entries(filter).map(
-    ([filterType, filterEvents]) => ({
-      type: filterType,
-      exists: filterEvents(events).length > 0
-    })
-  );
-}
-
-export {generateFilters};
+export const generateFilters = (points) =>
+  Object.entries(filter).map(([filterType, filterPoints]) => ({
+    type: filterType,
+    isDisabled: !filterPoints(points).length,
+  }));

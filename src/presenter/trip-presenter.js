@@ -1,85 +1,79 @@
-import { render, RenderPosition } from '../framework/render.js';
-import { updateItem } from '../utils/common.js';
-import TripEventsView from '../view/trip-events-view.js';
-import SortView from '../view/sort-view.js';
-import EventPresenter from './event-presenter.js';
-import NoEventView from '../view/no-event-view.js';
+import { SortView, PointListView, EmptyListView } from '../view';
+import { render } from '../framework/render.js';
+import { PointPresenter } from '../presenter';
+import { updateItem } from '../utils/common';
 
 export default class TripPresenter {
-  #eventListComponent = new TripEventsView();
+  #pointListComponent = new PointListView();
+  #emptyListComponent = new EmptyListView();
   #sortComponent = new SortView();
-  #noEventComponent = new NoEventView();
-
+  #pointPresenters = new Map();
   #tripContainer = null;
   #destinationsModel = null;
   #offersModel = null;
-  #eventsModel = null;
-  #tripEvents = null;
+  #pointsModel = null;
+  #points = [];
 
-  #eventPresenters = new Map();
-
-  constructor({tripContainer, destinationsModel, offersModel, eventsModel}) {
+  constructor({ tripContainer, destinationsModel, offersModel, pointsModel }) {
     this.#tripContainer = tripContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
-    this.#eventsModel = eventsModel;
+    this.#pointsModel = pointsModel;
+    this.#points = [...this.#pointsModel.getAll()];
   }
 
   init() {
-    this.#tripEvents = [...this.#eventsModel.get()];
-
     this.#renderTrip();
   }
 
-  #renderTrip() {
-    if (this.#tripEvents.length === 0) {
-      this.#renderNoEvents();
+  #renderTrip = () => {
+    if (!this.#points.length) {
+      render(this.#emptyListComponent, this.#tripContainer);
       return;
     }
 
     this.#renderSort();
-    this.#renderEventContainer();
-    this.#renderEvents();
-  }
+    this.#renderPointList();
+    this.#renderPoints();
+  };
 
-  #renderEventContainer() {
-    render(this.#eventListComponent, this.#tripContainer);
-  }
+  #renderSort = () => {
+    render(this.#sortComponent, this.#tripContainer);
+  };
 
-  #renderSort() {
-    render(this.#sortComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
-  }
+  #renderPointList = () => {
+    render(this.#pointListComponent, this.#tripContainer);
+  };
 
-  #renderNoEvents() {
-    render(this.#noEventComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
-  }
+  #renderPoints = () => {
+    this.#points.forEach((point) => this.#renderPoint(point));
+  };
 
-  #handleEventChange = (updatedEvent) => {
-    this.#tripEvents = updateItem(this.#tripEvents, updatedEvent);
-    this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
+  #renderPoint = (point) => {
+    const pointPresenter = new PointPresenter({
+      container: this.#pointListComponent.element,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel,
+      handleDataChange: this.#handlePointChange,
+      handleModeChange: this.#handleModeChange,
+    });
+
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  };
+
+  #clearPoints = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  };
+
+  #handlePointChange = (updatePoint) => {
+    this.#points = updateItem(this.#points, updatePoint);
+    this.#pointPresenters.get(updatePoint.id).init(updatePoint);
   };
 
   #handleModeChange = () => {
-    this.#eventPresenters.forEach((presenter) => presenter.resetView());
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
-
-  #renderEvents() {
-    for (let i = 0; i < this.#tripEvents.length; i++) {
-      this.#renderEvent(this.#tripEvents[i]);
-    }
-  }
-
-  #renderEvent(event) {
-    const eventPresenter = new EventPresenter({
-      eventListContainer: this.#eventListComponent,
-      destinationsModel: this.#destinationsModel,
-      offersModel: this.#offersModel,
-      onDataChange: this.#handleEventChange,
-      onModeChange: this.#handleModeChange,
-    });
-
-    eventPresenter.init(event);
-    this.#eventPresenters.set(event.id, eventPresenter);
-  }
 }
 

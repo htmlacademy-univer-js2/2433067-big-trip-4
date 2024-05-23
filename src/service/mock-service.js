@@ -1,45 +1,55 @@
-import { mockDestinations } from '../mock/destinations.js';
-import { mockOffers } from '../mock/offers.js';
-import { generateEvent } from '../mock/events.js';
-import { EVENT_COUNT, TYPES } from '../const.js';
-import { getRandomArrayElement, getRandomInteger } from '../utils/common.js';
+import { getRandomInteger, getRandomArrayElement } from '../mock/utils';
+import { generateDestination, generateOffer, generatePoint } from '../mock';
+import { POINT_TYPES } from '../const';
 
 export default class MockService {
   #destinations = null;
   #offers = null;
-  #events = null;
+  #points = null;
 
   constructor() {
-    this.#destinations = mockDestinations;
-    this.#offers = mockOffers;
-    this.#events = this.#generateEvents();
+    this.#destinations = this.#generateDestinations();
+    this.#offers = this.#generateOffers();
+    this.#points = this.#generatePoints();
   }
 
-  #generateEvents() {
-    return Array.from({length: EVENT_COUNT}, () => {
-      const type = getRandomArrayElement(TYPES);
+  #generateDestinations() {
+    return Array.from({ length: 5 }, generateDestination);
+  }
+
+  #generateOffers() {
+    return POINT_TYPES.map((type) => ({
+      type,
+      offers: Array.from({ length: 5 }, generateOffer)
+    }));
+  }
+
+  #generatePoints() {
+    return Array.from({ length: 5 }, () => {
+      const type = getRandomArrayElement(POINT_TYPES);
       const destination = getRandomArrayElement(this.#destinations);
-      const destinationIDs = destination.id;
-      const offersByType = this.#offers.find((offerByType) => offerByType.type === type);
-      const offersIDs = [];
-      offersByType.offers.forEach((offer) => {
-        if (getRandomInteger(0, 1)) {
-          offersIDs.push(offer.id);
-        }
-      });
-      return generateEvent(type, offersIDs, destinationIDs);
+      const hasOffers = getRandomInteger(0, 1);
+      const offersByType = this.#offers.find((offer) => offer.type === type);
+      const offerIds = (hasOffers)
+        ? offersByType.offers
+          .slice(0, getRandomInteger(0, 5))
+          .map((offer) => offer.id)
+        : [];
+
+      return generatePoint(type, destination.id, offerIds);
     });
   }
 
-  get destinations() {
+  getDestinations() {
     return this.#destinations;
   }
 
-  get offers() {
+  getOffers() {
     return this.#offers;
   }
 
-  get events() {
-    return this.#events;
+  getPoints() {
+    return this.#points;
   }
 }
+
