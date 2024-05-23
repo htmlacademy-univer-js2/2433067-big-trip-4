@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { formatStringToDateTime, formatStringToShortDate, formatStringToTime, firstLetterToUpperCase, getPointDuration } from '../utils.js';
+import { firstLetterToUpperCase } from '../utils/common.js';
+import { formatStringToDateTime, formatStringToShortDate, formatStringToTime, getPointDuration } from '../utils/event.js';
 
 function createCheckedOffersElement(offers, checkedOffers) {
   const offerItem = offers.map((offer) => checkedOffers.includes(offer.id) ? `
@@ -52,17 +53,21 @@ export default class EventView extends AbstractView {
   #event = null;
   #eventDestination = null;
   #eventOffers = null;
-  #handleRollupClick = null;
+  #onRollupClick = null;
+  #onFavoriteClick = null;
 
-  constructor({event, eventDestination, eventOffers, onRollupClick}) {
+  constructor({event, eventDestination, eventOffers, onRollupClick, onFavoriteClick}) {
     super();
     this.#event = event;
     this.#eventDestination = eventDestination;
     this.#eventOffers = eventOffers;
-    this.#handleRollupClick = onRollupClick;
+    this.#onRollupClick = onRollupClick;
+    this.#onFavoriteClick = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupClickHandler);
+    this.element.querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {
@@ -75,7 +80,13 @@ export default class EventView extends AbstractView {
 
   #rollupClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleRollupClick();
+    this.#onRollupClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onFavoriteClick();
   };
 }
+
 

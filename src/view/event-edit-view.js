@@ -1,6 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { TYPES, CITIES, POINT_EMPTY } from '../const.js';
-import { formatStringToDateTime, firstLetterToUpperCase, firstLetterToLowerCase } from '../utils.js';
+import { firstLetterToUpperCase, firstLetterToLowerCase } from '../utils/common.js';
+import { formatStringToDateTime } from '../utils/event.js';
 
 function createEventTypesListElement(currentType) {
   return TYPES.map((type) =>
@@ -85,7 +86,8 @@ function createEventEditElement({event, eventDestination, eventOffers}) {
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Cancel</button>
+          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__rollup-btn" type="button">
         </header>
         <section class="event__details">
           <section class="event__section  event__section--offers">
@@ -108,21 +110,21 @@ export default class EventEditView extends AbstractView {
   #event = null;
   #eventDestination = null;
   #eventOffers = null;
-  #handleEditSubmit = null;
-  #handleResetClick = null;
+  #onEditSubmit = null;
+  #onRollupClick = null;
 
-  constructor({event = POINT_EMPTY, eventDestination, eventOffers, onEditSubmit, onResetClick}) {
+  constructor({event = POINT_EMPTY, eventDestination, eventOffers, onEditSubmit, onRollupClick}) {
     super();
     this.#event = event;
     this.#eventDestination = eventDestination;
     this.#eventOffers = eventOffers;
-    this.#handleEditSubmit = onEditSubmit;
-    this.#handleResetClick = onResetClick;
+    this.#onEditSubmit = onEditSubmit;
+    this.#onRollupClick = onRollupClick;
 
     this.element.querySelector('.event--edit')
       .addEventListener('submit', this.#editSubmitHandler);
-    this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#resetClickHandler);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#rollupClickHandler);
   }
 
   get template() {
@@ -135,11 +137,11 @@ export default class EventEditView extends AbstractView {
 
   #editSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditSubmit();
+    this.#onEditSubmit(this.#event);
   };
 
-  #resetClickHandler = (evt) => {
+  #rollupClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleResetClick();
+    this.#onRollupClick();
   };
 }
