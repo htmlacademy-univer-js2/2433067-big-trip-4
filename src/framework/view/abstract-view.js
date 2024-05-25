@@ -67,3 +67,4 @@ export default class AbstractView {
  * @callback shakeCallback
  */
 
+
