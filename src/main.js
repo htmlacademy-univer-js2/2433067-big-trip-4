@@ -28,3 +28,4 @@ render(new TripInfoView(), tripMainContainer, RenderPosition.AFTERBEGIN);
 render(new FilterView({filters}), filterContainer);
 
 routePresenter.init();
+
