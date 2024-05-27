@@ -1,5 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+
 import { TYPES, CITIES, EVENT_EMPTY } from '../const.js';
+
 import { firstLetterToUpperCase, firstLetterToLowerCase } from '../utils/common.js';
 import { formatStringToDateTime } from '../utils/event.js';
 import flatpickr from 'flatpickr';
@@ -137,6 +139,7 @@ export default class EventEditView extends AbstractStatefulView {
     });
   }
 
+
   removeElement() {
     super.removeElement();
 
@@ -170,7 +173,6 @@ export default class EventEditView extends AbstractStatefulView {
       .addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
-
     this.#setDatepickers();
   }
 
@@ -222,6 +224,7 @@ export default class EventEditView extends AbstractStatefulView {
         minDate: this._state.dateFrom,
       },
     );
+
   }
 
   #editSubmitHandler = (evt) => {
