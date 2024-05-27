@@ -1,23 +1,14 @@
-import { getRandomArrayElement, getRandomInteger } from '../utils/common.js';
-import { TYPES, TITLES, Price } from '../const.js';
+import {offersByType } from './const';
+import { getRandomSliceFromItems } from '../util';
 
-const mockOffers = [];
 
-function generateOffer(type) {
-  return {
-    type,
-    offers: Array.from({length: getRandomInteger(0, 5)}, () => ({
-      id: crypto.randomUUID(),
-      title: getRandomArrayElement(TITLES),
-      price:getRandomInteger(Price.MIN, Price.MAX)
-    }))
-  };
-}
+const getRandomOffersIdsByType = (type) => {
+  const currentTypeOffers = getRandomSliceFromItems(
+    offersByType.find((currentOffers) => currentOffers.type === type).offers);
+  return currentTypeOffers.map((offer) => offer.id);
+};
 
-TYPES.forEach((type) => {
-  const offer = generateOffer(type);
-  mockOffers.push(offer);
-});
+const getOfferById = (type, offerId)=> offersByType.find((el)=>el.type === type).offers.find((offer)=>offer.id === offerId);
 
-export {mockOffers};
 
+export {getRandomOffersIdsByType, getOfferById};
