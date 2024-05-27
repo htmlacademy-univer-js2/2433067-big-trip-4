@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "css-loader": "^7.1.2",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "style-loader": "^4.0.0"
   }
 }
