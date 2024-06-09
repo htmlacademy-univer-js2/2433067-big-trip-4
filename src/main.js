@@ -1,31 +1,27 @@
-import FilterView from './view/filter-view.js';
-import TripInfoView from './view/trip-info-view.js';
-import { render, RenderPosition } from './framework/render.js';
-import TripPresenter from './presenter/trip-presenter.js';
-import MockService from './service/mock-service.js';
-import DestinationsModel from './model/destinations-model.js';
-import OffersModel from './model/offers-model.js';
-import EventsModel from './model/events-model.js';
-import { generateFilters } from './mock/filter.js';
+import Filters from './view/filters.js';
+import BoardPresenter from './presenter/board-presenter';
+import ModelWaypoint from './model/model-waypoint';
+import {mockInit, waypoints} from './mock/point';
+import {render} from './framework/render';
+import ModelOffers from './model/offers-model';
+import ModelDestinations from './model/destinations-model';
+import {offersByType} from './mock/const';
+import {destinations} from './mock/destination';
 
-const tripMainContainer = document.querySelector('.trip-main');
-const filterContainer = document.querySelector('.trip-controls__filters');
-const tripEventsContainer = document.querySelector('.trip-events');
-const mockService = new MockService();
-const destinationsModel = new DestinationsModel(mockService);
-const offersModel = new OffersModel(mockService);
-const eventsModel = new EventsModel(mockService);
-const filters = generateFilters(eventsModel.get());
+const siteHeaderElement = document.querySelector('.trip-controls__filters');
+const container = document.querySelector('.trip-events');
 
-const routePresenter = new TripPresenter({
-  tripContainer: tripEventsContainer,
-  destinationsModel,
-  offersModel,
-  eventsModel
+mockInit(3, 10);
+const modelWaypoints = new ModelWaypoint(waypoints);
+const modelOffers = new ModelOffers(offersByType);
+const modelDestinations = new ModelDestinations(destinations);
+
+const boardPresenter = new BoardPresenter({
+  boardContainer: container,
+  waypointsModel: modelWaypoints,
+  modelOffers,
+  modelDestinations
 });
+render(new Filters(), siteHeaderElement);
 
-render(new TripInfoView(), tripMainContainer, RenderPosition.AFTERBEGIN);
-render(new FilterView({filters}), filterContainer);
-
-routePresenter.init();
-
+boardPresenter.init();

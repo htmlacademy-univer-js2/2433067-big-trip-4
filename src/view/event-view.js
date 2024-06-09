@@ -90,4 +90,3 @@ export default class EventView extends AbstractView {
     this.#handleFavoriteClick();
   };
 }
-
