@@ -9,3 +9,4 @@ export default class TripEventsView extends AbstractView {
     return createTripEventsElement();
   }
 }
+

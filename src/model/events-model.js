@@ -1,6 +1,6 @@
 import Observable from '../framework/observable.js';
 import { updateItem } from '../utils/common.js';
-import { adaptToClient } from '../utils/adapter.js';
+import { adaptToClient } from '../utils/adapt.js';
 import { UpdateType } from '../const.js';
 
 export default class EventsModel extends Observable {
@@ -68,4 +68,5 @@ export default class EventsModel extends Observable {
     }
   }
 }
+
 

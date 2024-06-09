@@ -4,7 +4,7 @@ import { isEscapeKey } from '../utils/common.js';
 import EventView from '../view/event-view.js';
 import EventEditView from '../view/event-edit-view.js';
 import { UserAction, UpdateType } from '../const.js';
-import { isBigDifference } from '../utils/points.js';
+import { isBigDifference } from '../utils/event.js';
 
 export default class EventPresenter {
   #eventListContainer = null;
