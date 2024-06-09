@@ -1,7 +1,10 @@
 import { render, replace, remove } from '../framework/render.js';
 import { Mode } from '../const.js';
+import { isEscapeKey } from '../utils/common.js';
 import EventView from '../view/event-view.js';
 import EventEditView from '../view/event-edit-view.js';
+import { UserAction, UpdateType } from '../const.js';
+import { isBigDifference } from '../utils/points.js';
 
 export default class EventPresenter {
   #eventListContainer = null;
@@ -11,16 +14,16 @@ export default class EventPresenter {
   #event = null;
   #eventComponent = null;
   #eventEditComponent = null;
-  #onDataChange = null;
-  #onModeChange = null;
+  #handleDataChange = null;
+  #handleModeChange = null;
   #mode = Mode.DEFAULT;
 
   constructor({eventListContainer, destinationsModel, offersModel, onDataChange, onModeChange}) {
     this.#eventListContainer = eventListContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
-    this.#onDataChange = onDataChange;
-    this.#onModeChange = onModeChange;
+    this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(event) {
@@ -39,9 +42,10 @@ export default class EventPresenter {
 
     this.#eventEditComponent = new EventEditView({
       event: this.#event,
-      eventDestination: this.#destinationsModel.getById(event.destination),
-      eventOffers: this.#offersModel.getByType(event.type),
+      eventDestination: this.#destinationsModel.get(),
+      eventOffers: this.#offersModel.get(),
       onEditSubmit: this.#editSubmitHandler,
+      onEditReset: this.#editResetHandler,
       onRollupClick: this.#editorRollupClickHandler,
     });
 
@@ -56,7 +60,8 @@ export default class EventPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#eventEditComponent, prevEventEditComponent);
+      replace(this.#eventComponent, prevEventEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevEventComponent);
@@ -65,6 +70,7 @@ export default class EventPresenter {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#eventEditComponent.reset(this.#event);
       this.#replaceEditorToEvent();
     }
   }
@@ -74,10 +80,40 @@ export default class EventPresenter {
     remove(this.#eventEditComponent);
   }
 
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#eventEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#eventEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#eventEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#eventEditComponent.shake(resetFormState);
+  }
+
   #replaceEventToEditor() {
     replace(this.#eventEditComponent, this.#eventComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
-    this.#onModeChange();
+    this.#handleModeChange();
     this.#mode = Mode.EDITING;
   }
 
@@ -88,7 +124,11 @@ export default class EventPresenter {
   }
 
   #favoriteClickHandler = () => {
-    this.#onDataChange({...this.#event, isFavorite: !this.#event.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.PATCH,
+      {...this.#event, isFavorite: !this.#event.isFavorite},
+    );
   };
 
   #eventRollupClickHandler = () => {
@@ -96,18 +136,33 @@ export default class EventPresenter {
   };
 
   #editorRollupClickHandler = () => {
+    this.#eventEditComponent.reset(this.#event);
     this.#replaceEditorToEvent();
   };
 
-  #editSubmitHandler = (event) => {
-    this.#replaceEditorToEvent();
-    this.#onDataChange(event);
+  #editSubmitHandler = (update) => {
+    const isMinorUpdate = isBigDifference(update, this.#event);
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
+  };
+
+  #editResetHandler = (event) => {
+    this.#handleDataChange(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
+      event,
+    );
   };
 
   #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
+      this.#eventEditComponent.reset(this.#event);
       this.#replaceEditorToEvent();
     }
   };
 }
+
