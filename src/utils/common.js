@@ -1,14 +1,4 @@
-function getRandomInteger (min, max) {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-}
-
-function getRandomArrayElement(items) {
-  return items[getRandomInteger(0, items.length - 1)];
-}
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 function firstLetterToUpperCase(type) {
   return type.charAt(0).toUpperCase() + type.slice(1);
@@ -23,8 +13,8 @@ function updateItem(items, update) {
 }
 
 export {
-  getRandomInteger,
-  getRandomArrayElement,
   firstLetterToUpperCase,
   firstLetterToLowerCase,
-  updateItem};
+  updateItem,
+  isEscapeKey};
+
