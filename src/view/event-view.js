@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import he from 'he';
 import { firstLetterToUpperCase } from '../utils/common.js';
-import { formatStringToDateTime, formatStringToShortDate, formatStringToTime, getEventDuration } from '../utils/points.js';
+import { formatStringToDateTime, formatStringToShortDate, formatStringToTime, getEventDuration } from '../utils/point.js';
 
 function createCheckedOffersElement(offers, checkedOffers) {
   const offerItem = offers.map((offer) => checkedOffers.includes(offer.id) ? `

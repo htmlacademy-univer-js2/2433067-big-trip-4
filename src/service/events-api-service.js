@@ -1,6 +1,6 @@
 import ApiService from '../framework/api-service.js';
 import { Method } from '../const.js';
-import { adaptToServer } from '../utils/adapter.js';
+import { adaptToServer } from '../utils/adapt.js';
 
 export default class EventsApiService extends ApiService {
   get events() {
