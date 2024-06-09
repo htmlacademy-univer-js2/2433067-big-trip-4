@@ -234,5 +234,3 @@ export default class TripPresenter {
     this.#eventPresenters.set(event.id, eventPresenter);
   }
 }
-
-

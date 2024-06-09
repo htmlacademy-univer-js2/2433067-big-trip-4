@@ -55,4 +55,3 @@ render(newEventButtonComponent, tripMainContainer, RenderPosition.BEFOREEND);
 routePresenter.init();
 filterPresenter.init();
 eventsModel.init();
-
