@@ -1,4 +1,4 @@
-import { sortByDay, sortByPrice, sortByTime } from './event.js';
+import { sortByDay, sortByPrice, sortByTime } from './point.js';
 import { SortType } from '../const.js';
 
 const sort = {
