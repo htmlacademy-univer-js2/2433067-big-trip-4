@@ -14,4 +14,3 @@ const sort = {
 };
 
 export {sort};
-
