@@ -1,3 +1,4 @@
+import {createElement} from '../render.js';
 import './abstract-view.css';
 
 /** @const {string} Класс, реализующий эффект "покачивания головой" */
@@ -28,7 +29,6 @@ export default class AbstractView {
    */
   get element() {
     if (!this.#element) {
-      // eslint-disable-next-line no-undef
       this.#element = createElement(this.template);
     }
 
@@ -66,4 +66,3 @@ export default class AbstractView {
  * Функция, которая будет вызвана методом shake после завершения анимации
  * @callback shakeCallback
  */
-

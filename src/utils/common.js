@@ -1,3 +1,4 @@
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 function firstLetterToUpperCase(type) {

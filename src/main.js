@@ -1,10 +1,9 @@
-import { DestinationsModel, FilterModel, OffersModel, EventsModel } from './model';
-import NewEventButtonView from './view/new-event-view.js';
+import NewEventButtonView from './view/new-point-view.js';
 import { render, RenderPosition } from './framework/render.js';
 import TripPresenter from './presenter/trip-presenter.js';
+import { DestinationsModel, FilterModel, OffersModel, EventsModel } from './model';
 import FilterPresenter from './presenter/filter-presenter.js';
 import EventsApiService from './service/points-api-service.js';
-
 
 const AUTHORIZATION = 'Basic dd89j3m2h5l';
 const END_EVENT = 'https://21.objects.htmlacademy.pro/big-trip';
