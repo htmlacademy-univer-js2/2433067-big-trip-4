@@ -1,6 +1,6 @@
 import { render, RenderPosition, remove } from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
-import TripEventsView from '../view/trip-events-view.js';
+import TripEventsView from '../view/trip-points-view.js';
 import SortView from '../view/sort-view.js';
 import EventPresenter from './point-presenter.js';
 import NewEventPresenter from './new-point-presenter.js';
