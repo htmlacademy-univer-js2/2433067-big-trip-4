@@ -1,8 +1,7 @@
 import NewEventButtonView from './view/new-point-view.js';
 import { render, RenderPosition } from './framework/render.js';
-import TripPresenter from './presenter/trip-presenter.js';
 import { DestinationsModel, FilterModel, OffersModel, EventsModel } from './model';
-import FilterPresenter from './presenter/filter-presenter.js';
+import { TripPresenter, FilterPresenter } from './presenter';
 import EventsApiService from './service/points-api-service.js';
 
 const AUTHORIZATION = 'Basic dd89j3m2h5l';
