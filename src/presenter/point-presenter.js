@@ -2,7 +2,7 @@ import { render, replace, remove } from '../framework/render.js';
 import { Mode } from '../const.js';
 import { isEscapeKey } from '../utils/common.js';
 import EventView from '../view/event-view.js';
-import EventEditView from '../view/event-edit-view.js';
+import EventEditView from '../view/point-edit-view.js';
 import { UserAction, UpdateType } from '../const.js';
 import { isBigDifference } from '../utils/point.js';
 

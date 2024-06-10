@@ -3,7 +3,7 @@ import NewEventButtonView from './view/new-event-view.js';
 import { render, RenderPosition } from './framework/render.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
-import EventsApiService from './service/events-api-service.js';
+import EventsApiService from './service/points-api-service.js';
 
 
 const AUTHORIZATION = 'Basic dd89j3m2h5l';
