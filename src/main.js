@@ -4,7 +4,7 @@ import { DestinationsModel, FilterModel, OffersModel, EventsModel } from './mode
 import { TripPresenter, FilterPresenter } from './presenter';
 import EventsApiService from './service/points-api-service.js';
 
-const AUTHORIZATION = 'Basic dd89j3m2h5l';
+const AUTHORIZATION = 'Basic db65lk13jah';
 const END_EVENT = 'https://21.objects.htmlacademy.pro/big-trip';
 
 const tripMainContainer = document.querySelector('.trip-main');
