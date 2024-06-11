@@ -1,5 +1,5 @@
-import { sortByDay, sortByPrice, sortByTime } from './point.js';
-import { SortType } from '../const.js';
+import { sortByDay, sortByPrice, sortByTime } from './utils/point.js';
+import { SortType } from './const.js';
 
 const sort = {
   [SortType.DAY]: (points) => points.sort(sortByDay),

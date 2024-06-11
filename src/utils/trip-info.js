@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { DESTINATION_ITEMS_LENGTH, SortType } from '../const';
-import { sort } from './sort';
+import { sort } from '../sort';
 
 function getTripTitle(events = [], destinations = []) {
   const destinationNames = sort[SortType.DAY]([...events])

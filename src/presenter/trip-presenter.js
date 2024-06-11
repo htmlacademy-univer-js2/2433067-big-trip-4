@@ -7,7 +7,7 @@ import NewEventPresenter from './new-point-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
 import MessageView from '../view/message-view.js';
 import { SortType, UserAction, UpdateType, FilterType, TimeLimit } from '../const.js';
-import { sort } from '../utils/sort.js';
+import { sort } from '../sort.js';
 import { filter } from '../utils/filter.js';
 
 export default class TripPresenter {
